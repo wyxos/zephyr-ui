@@ -7,16 +7,16 @@ use Illuminate\Support\Facades\File;
 
 class PublishAssetsCommand extends Command
 {
-    protected $signature = 'task-manager:publish';
+    protected $signature = 'zephyr:publish';
     protected $description = 'Publish task manager assets to the public directory';
 
     public function handle()
     {
         // Path to your package's dist directory
-        $distPath = __DIR__ . '/../../dashboard/dist';
+        $distPath = __DIR__ . '/../../dist';
 
         // Path to the Laravel app's public directory
-        $publicPath = public_path('vendor/task-manager-interface');
+        $publicPath = public_path('vendor/zephyr-ui');
 
         File::copyDirectory($distPath, $publicPath);
 

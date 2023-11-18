@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'api/workspace'], function () {
     Route::post('/authenticate', function (Request $request) {
-        $response = Http::post('https://task-manager.test/api/authenticate', [
+        $response = Http::post('https://zephyr.test/api/authenticate', [
             'email' => $request->email,
             'password' => $request->password
         ]);
@@ -29,7 +29,7 @@ Route::group(['prefix' => 'api/workspace'], function () {
             return response()->json(['message' => 'No session token found'], 401);
         }
 
-        $response = Http::withToken($token)->post('https://task-manager.test/api/validate-token');
+        $response = Http::withToken($token)->post('https://zephyr.test/api/validate-token');
 
         if ($response->successful()) {
             return response()->json(['message' => 'Token is valid']);
@@ -45,7 +45,7 @@ Route::group(['prefix' => 'api/workspace'], function () {
 
         $method = $request->getMethod();
 
-        $endpoint = 'https://task-manager.test/api/workspace/' .
+        $endpoint = 'https://zephyr.test/api/workspace/' .
             env('PROJECT_TOKEN') . '/' .
             $request->route('endpoint');
 

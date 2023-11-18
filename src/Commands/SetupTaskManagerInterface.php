@@ -4,12 +4,10 @@ namespace Wyxos\ZephyrUI\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Str;
 
 class SetupTaskManagerInterface extends Command
 {
-    protected $signature = 'task-manager:setup';
+    protected $signature = 'zephyr:setup';
     protected $description = 'Setup the Task Manager Interface';
 
     public function handle()
@@ -18,7 +16,7 @@ class SetupTaskManagerInterface extends Command
         $password = $this->secret('Please enter your password');
 
         // Authenticate and get token
-        $response = Http::post('https://task-manager.test/api/authenticate', [
+        $response = Http::post('https://zephyr.test/api/authenticate', [
             'email' => $email,
             'password' => $password,
         ]);
@@ -42,7 +40,7 @@ class SetupTaskManagerInterface extends Command
 
     protected function selectProject($token)
     {
-        $response = Http::withToken($token)->get('https://task-manager.test/api/projects');
+        $response = Http::withToken($token)->get('https://zephyr.test/api/projects');
 
         if ($response->successful()) {
             $projects = $response->json()['query']['items'];
@@ -51,7 +49,7 @@ class SetupTaskManagerInterface extends Command
             $selectedProjectId = $projects[array_search($selectedProjectName, $projectNames)]['id'];
 
             // Make an API call to generate a token for the selected project
-            $tokenResponse = Http::withToken($token)->post("https://task-manager.test/api/projects/{$selectedProjectId}/token");
+            $tokenResponse = Http::withToken($token)->post("https://zephyr.test/api/projects/{$selectedProjectId}/token");
 
             if ($tokenResponse->successful()) {
                 return $tokenResponse->json()['token'];
