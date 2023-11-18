@@ -1,0 +1,21 @@
+{
+  "name": "wyxos/zephyr-ui",
+  "type": "library",
+  "require": {
+    "php": "^8.2",
+    "laravel/framework": "^10.25",
+    "nunomaduro/laravel-console-menu": "^3.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Wyxos\\ZephyrUI\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Wyxos\\ZephyrUI\\ZephyrUIServiceProvider"
+      ]
+    }
+  }
+}
