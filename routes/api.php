@@ -46,7 +46,7 @@ Route::group(['prefix' => 'api/workspace'], function () {
         $method = $request->getMethod();
 
         $endpoint = 'https://zephyr.test/api/workspace/' .
-            env('PROJECT_TOKEN') . '/' .
+            config('zephyr.token') . '/' .
             $request->route('endpoint');
 
         $response = Http::withToken($token)
@@ -56,4 +56,4 @@ Route::group(['prefix' => 'api/workspace'], function () {
     })
         ->where('endpoint', '.*');
 })
-    ->middleware(['api', 'auth:sanctum']);
+    ->middleware(['api', 'zephyr', 'auth:sanctum']);

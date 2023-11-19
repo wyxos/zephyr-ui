@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'workspace', 'middleware' => 'web'], function () {
@@ -15,5 +13,5 @@ Route::group(['prefix' => 'workspace', 'middleware' => 'web'], function () {
         ]);
     })
         ->where('page', '.*')
-        ->middleware('auth');
+        ->middleware(['zephyr', 'auth']);
 });
