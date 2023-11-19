@@ -3,8 +3,8 @@
 namespace Wyxos\ZephyrUI;
 
 use Illuminate\Support\ServiceProvider;
-use Wyxos\ZephyrUI\Commands\PublishAssetsCommand;
-use Wyxos\ZephyrUI\Commands\SetupZephyr;
+use Wyxos\ZephyrUI\Commands\ZephyrPublish;
+use Wyxos\ZephyrUI\Commands\ZephyrSetup;
 
 class ZephyrUIServiceProvider extends ServiceProvider
 {
@@ -24,8 +24,8 @@ class ZephyrUIServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->commands([
-                PublishAssetsCommand::class,
-                SetupZephyr::class,
+                ZephyrPublish::class,
+                ZephyrSetup::class,
             ]);
         }
     }

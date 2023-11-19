@@ -5,10 +5,10 @@ namespace Wyxos\ZephyrUI\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
-class PublishAssetsCommand extends Command
+class ZephyrPublish extends Command
 {
     protected $signature = 'zephyr:publish';
-    protected $description = 'Publish task manager assets to the public directory';
+    protected $description = 'Publish Zephyr assets to the public directory';
 
     public function handle()
     {

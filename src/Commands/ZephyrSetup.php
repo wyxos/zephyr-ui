@@ -5,7 +5,7 @@ namespace Wyxos\ZephyrUI\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
-class SetupZephyr extends Command
+class ZephyrSetup extends Command
 {
     protected $signature = 'zephyr:setup';
     protected $description = 'Setup Zephyr UI';
@@ -20,6 +20,10 @@ class SetupZephyr extends Command
             'email' => $email,
             'password' => $password,
         ]);
+
+        if ($this->confirm('Do you want to add the publish command to composer.json?', true)) {
+            $this->addPublishCommandToComposer();
+        }
 
         if ($response->successful()) {
             $token = $response->json()['token'];
@@ -47,13 +51,14 @@ class SetupZephyr extends Command
             $projectNames = array_column($projects, 'name');
 
             // Add "New" option
-            $projectNames[] = 'New';
+            $projectNames[] = 'Create a new project';
 
             $selectedProjectName = $this->choice('Select a project:', $projectNames);
 
-            if ($selectedProjectName === 'New') {
+            if ($selectedProjectName === 'Create a new project') {
                 // Prompt for new project name, default to app name
                 $defaultName = config('app.name');
+
                 $newProjectName = $this->ask('Enter the name of the new project', $defaultName);
 
                 // Create a new project
@@ -105,5 +110,22 @@ class SetupZephyr extends Command
         }
 
         file_put_contents($envPath, $envContent);
+    }
+
+    protected function addPublishCommandToComposer()
+    {
+        $composerPath = base_path('composer.json');
+        $composerJson = json_decode(file_get_contents($composerPath), true);
+
+        $publishCommand = '@php artisan zephyr:publish';
+
+        // Check if composer.json has post-update-cmd and if it already contains the command
+        if (!isset($composerJson['scripts']['post-update-cmd']) || !in_array($publishCommand, $composerJson['scripts']['post-update-cmd'])) {
+            $composerJson['scripts']['post-update-cmd'][] = $publishCommand;
+            file_put_contents($composerPath, json_encode($composerJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            $this->info('Publish command added to composer.json.');
+        } else {
+            $this->info('Publish command already exists in composer.json.');
+        }
     }
 }
